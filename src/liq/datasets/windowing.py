@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Iterable
 
 import numpy as np
 import polars as pl
@@ -83,11 +83,8 @@ class WindowBuilder:
         view_b: pl.DataFrame,
         stride_bars: int,
     ) -> dict[str, np.ndarray]:
-        if len(view_a) != len(view_b):
-            raise ValueError("view_a and view_b must be aligned in length")
-        if "timestamp" in view_a.columns and "timestamp" in view_b.columns:
-            if view_a["timestamp"].to_list() != view_b["timestamp"].to_list():
-                raise ValueError("view_a and view_b timestamps must be aligned")
+        if "timestamp" in view_a.columns and "timestamp" in view_b.columns and view_a["timestamp"].to_list() != view_b["timestamp"].to_list():
+            raise ValueError("view_a and view_b timestamps must be aligned")
         return {
             "view_a": self.build_ssl_windows(view_a, stride_bars),
             "view_b": self.build_ssl_windows(view_b, stride_bars),
