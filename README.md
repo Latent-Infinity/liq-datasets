@@ -9,7 +9,7 @@ Responsibilities:
 
 This library does not perform feature engineering or model training.
 
-## Failure Modes (Phase 6 hardening)
+## Failure Modes (Stage 6 hardening)
 
 | Failure | Exception | Trigger | Remediation |
 |---------|-----------|---------|-------------|

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "liq-datasets"
-version = "0.1.2"
+version = "0.1.3"
 description = "Dataset contracts and windowing utilities for the LIQ Stack"
 readme = "README.md"
 license = "MIT"
@@ -32,7 +32,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "numpy>=1.26",
+    "numpy>=2.0",
     "polars>=0.20",
 ]
 
