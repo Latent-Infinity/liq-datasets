@@ -224,3 +224,31 @@ def test_generate_paths_rejects_invalid_split_config() -> None:
         list(generate_paths(labels, CPCVConfig(n_splits=3, n_test_splits=3, embargo_bars=0)))
     with pytest.raises(ValueError, match="at least n_splits"):
         list(generate_paths(labels, CPCVConfig(n_splits=5, n_test_splits=1, embargo_bars=0)))
+
+
+@pytest.mark.parametrize(
+    ("l_vol", "l_base", "h"),
+    [
+        (1, 1, 1),
+        (10_000, 1, 1),
+        (1, 10_000, 1),
+        (1, 1, 10_000),
+        (7, 11, 13),
+        (987, 610, 377),
+    ],
+)
+def test_embargo_width_is_max_across_broad_positive_cases(l_vol: int, l_base: int, h: int) -> None:
+    assert embargo_width(l_vol, l_base, h) == max(l_vol, l_base, h)
+
+
+def test_assert_cpcv_embargo_raises_for_out_of_range_index() -> None:
+    labels = _labels(5)
+    invalid = CPCVPath(
+        path_id="cpcv:bad-index",
+        train_indices=(0, 1, 100),  # 100 is outside [0, 5)
+        test_indices=(3,),
+        test_folds=(0,),
+    )
+
+    with pytest.raises(EmbargoViolation, match="outside label range"):
+        assert_cpcv_embargo([invalid], labels, L_vol=1, L_base=1, H=1)
