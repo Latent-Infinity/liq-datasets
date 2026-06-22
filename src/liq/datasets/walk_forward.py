@@ -3,10 +3,9 @@
 from __future__ import annotations
 
 from bisect import bisect_left
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import datetime
-from collections.abc import Sequence
-
 
 SplitBoundary = slice | tuple[datetime, datetime]
 _SLICE_ID_PREFIX = "time_window"
@@ -94,7 +93,7 @@ class WalkForwardSplit:
         """Backwards-compatible alias for validate."""
         return self.validate
 
-    def to_bar_slices(self, index: Sequence[datetime]) -> "WalkForwardSplit":
+    def to_bar_slices(self, index: Sequence[datetime]) -> WalkForwardSplit:
         """Convert datetime boundaries to integer slices against an index.
 
         Datetime boundaries use left-closed, right-open semantics:
@@ -139,7 +138,7 @@ def _to_slice(
             raise ValueError(f"{name} slice index must be non-negative")
         return slice(start, min(stop, len(index)))
 
-    if len(boundary) != 2:  # type: ignore[arg-type]
+    if len(boundary) != 2:
         raise ValueError(f"{name} boundary tuple requires start/end datetimes")
     return _safe_to_slice(boundary, index)
 

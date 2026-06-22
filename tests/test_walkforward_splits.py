@@ -2,7 +2,7 @@ from datetime import UTC, datetime, timedelta, timezone
 
 import pytest
 
-from liq.datasets.walk_forward import WalkForwardSplit, generate_walk_forward_splits, _to_slice
+from liq.datasets.walk_forward import WalkForwardSplit, _to_slice, generate_walk_forward_splits
 
 
 def _hours(start: datetime, count: int) -> list[datetime]:
@@ -465,12 +465,12 @@ def test_generate_walk_forward_splits_with_embargo_creates_expected_gaps() -> No
 )
 def test_generate_walk_forward_splits_error_paths(kwargs: dict[str, int], match: str) -> None:
     timestamps = _hours(datetime(2024, 1, 1, tzinfo=UTC), 10)
-    params = dict(
-        train_window=2,
-        validate_window=2,
-        test_window=2,
-        step_size=2,
-    )
+    params = {
+        "train_window": 2,
+        "validate_window": 2,
+        "test_window": 2,
+        "step_size": 2,
+    }
     params.update(kwargs)
     with pytest.raises(ValueError, match=match):
         generate_walk_forward_splits(timestamps, **params)
