@@ -35,7 +35,9 @@ class HoldoutManager:
             raise ValueError("train_end_ts < dev_end_ts < lockbox_end_ts must hold")
         if config.label_lookahead_bars < 0 or config.embargo_bars < 0:
             raise ValueError("label_lookahead_bars and embargo_bars must be non-negative")
-        if any(self.timestamps[i] > self.timestamps[i + 1] for i in range(len(self.timestamps) - 1)):
+        if any(
+            self.timestamps[i] > self.timestamps[i + 1] for i in range(len(self.timestamps) - 1)
+        ):
             raise ValueError("timestamps must be sorted ascending")
 
     def _find_end_index(self, ts: datetime) -> int:

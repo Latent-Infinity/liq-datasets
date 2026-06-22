@@ -83,7 +83,11 @@ class WindowBuilder:
         view_b: pl.DataFrame,
         stride_bars: int,
     ) -> dict[str, np.ndarray]:
-        if "timestamp" in view_a.columns and "timestamp" in view_b.columns and view_a["timestamp"].to_list() != view_b["timestamp"].to_list():
+        if (
+            "timestamp" in view_a.columns
+            and "timestamp" in view_b.columns
+            and view_a["timestamp"].to_list() != view_b["timestamp"].to_list()
+        ):
             raise ValueError("view_a and view_b timestamps must be aligned")
         return {
             "view_a": self.build_ssl_windows(view_a, stride_bars),

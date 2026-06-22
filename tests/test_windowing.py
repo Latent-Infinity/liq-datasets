@@ -9,11 +9,13 @@ from liq.datasets.windowing import WindowBuilder
 
 def _sample_df(rows: int) -> pl.DataFrame:
     ts0 = datetime(2024, 1, 1, tzinfo=UTC)
-    return pl.DataFrame({
-        "timestamp": [ts0 + timedelta(hours=i) for i in range(rows)],
-        "a": list(range(rows)),
-        "b": [i * 10 for i in range(rows)],
-    })
+    return pl.DataFrame(
+        {
+            "timestamp": [ts0 + timedelta(hours=i) for i in range(rows)],
+            "a": list(range(rows)),
+            "b": [i * 10 for i in range(rows)],
+        }
+    )
 
 
 def test_ssl_window_shapes() -> None:
