@@ -1,7 +1,8 @@
-"""Xfail stubs for breakout-following label contracts.
+"""Contract-import + refusal sanity tests for breakout-following labels.
 
-Each xfail row in the ContractsFreeze manifest has a corresponding xfail
-test here.
+These tests pin the namespace surface promised by ContractsFreeze v1 and
+the `AttributeError`-vs-`NotImplementedError` refusal contract. Concrete
+surfaces are asserted as passing imports here.
 """
 
 from __future__ import annotations
@@ -17,26 +18,24 @@ def test_namespace_imports() -> None:
     assert module is not None
 
 
-@pytest.mark.xfail(
-    raises=NotImplementedError,
-    reason="FollowLabel concrete Pydantic contract is not implemented yet",
-    strict=True,
-)
 def test_follow_label_concrete_class_resolves() -> None:
-    from liq.datasets.breakout_following.labels import FollowLabel  # noqa: F401
+    """``FollowLabel`` is a concrete Pydantic model (ContractsFreeze row 1)."""
+    from liq.datasets.breakout_following.labels import FollowLabel
+
+    assert FollowLabel is not None
+    # frozen Pydantic instances have a ``model_config`` attribute
+    assert hasattr(FollowLabel, "model_config")
 
 
-@pytest.mark.xfail(
-    raises=NotImplementedError,
-    reason="flip_label_for_follow concrete function is not implemented yet",
-    strict=True,
-)
 def test_flip_label_for_follow_function_resolves() -> None:
-    from liq.datasets.breakout_following.labels import flip_label_for_follow  # noqa: F401
+    """``flip_label_for_follow`` is callable (ContractsFreeze row 1)."""
+    from liq.datasets.breakout_following.labels import flip_label_for_follow
+
+    assert callable(flip_label_for_follow)
 
 
 def test_unknown_attribute_raises_attribute_error() -> None:
-    """Non-stub attribute access must raise AttributeError (not NotImplementedError)."""
+    """Non-stub attribute access must raise ``AttributeError``."""
     from liq.datasets.breakout_following import labels
 
     with pytest.raises(AttributeError):
